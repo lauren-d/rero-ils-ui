@@ -83,9 +83,9 @@ export class MenuComponent implements OnInit {
     this.initLinksMenu();
     const currentUser = this.userService.getCurrentUser();
     this.recordService.getRecord('organisations', currentUser.library.organisation.pid)
-    .subscribe(organisation => {
-      this.userMenu.entries[0].entries[0].href = `/${organisation.metadata.code}/`;
-    });
+      .subscribe(organisation => {
+        this.userMenu.entries[0].entries[0].href = `/${organisation.metadata.code}/`;
+      });
 
     this.languages = this.configService.languages;
     for (const lang of this.languages) {
@@ -187,6 +187,10 @@ export class MenuComponent implements OnInit {
           }, {
             name: this.translateService.instant('Budgets'),
             routerLink: '/records/budgets',
+            iconCssClass: 'fa fa-money'
+          }, {
+            name: this.translateService.instant('Invoices'),
+            routerLink: '/records/acq_invoices',
             iconCssClass: 'fa fa-money'
           }]
         }, {

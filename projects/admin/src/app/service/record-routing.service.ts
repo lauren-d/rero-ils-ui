@@ -404,28 +404,59 @@ export class RecordRoutingService {
         ]
       }
     }, {
-      matcher: (url) => this.routeMatcher(url, 'libraries'),
-      children: [
-        { path: '', component: RecordSearchComponent },
-        { path: 'detail/:pid', component: DetailComponent },
-        { path: 'edit/:pid', component: EditorComponent },
-        { path: 'new', component: EditorComponent }
-      ],
-      data: {
-        linkPrefix: 'records',
-        types: [
-          {
-            key: _('libraries'),
-            label: _('Libraries'),
-            component: LibrariesBriefViewComponent,
-            detailComponent: LibraryDetailViewComponent,
-            canAdd: () => this.canAddLibrary(),
-            canUpdate: (record: any) => this.canUpdate(record),
-            canDelete: (record: any) => this.canDelete(record),
-            preprocessRecordEditor: (data: any) => this.addLibrarianOrganisation(data)
-          }
-        ]
-      }
+        matcher: (url) => this.routeMatcher(url, 'libraries'),
+        children: [
+          {path: '', component: RecordSearchComponent},
+          {path: 'detail/:pid', component: DetailComponent},
+          {path: 'edit/:pid', component: EditorComponent},
+          {path: 'new', component: EditorComponent}
+        ],
+        data: {
+          linkPrefix: 'records',
+          types: [
+            {
+              key: _('libraries'),
+              label: _('Libraries'),
+              component: LibrariesBriefViewComponent,
+              detailComponent: LibraryDetailViewComponent,
+              canAdd: () => this.canAddLibrary(),
+              canUpdate: (record: any) => this.canUpdate(record),
+              canDelete: (record: any) => this.canDelete(record),
+              preprocessRecordEditor: (data: any) => this.addLibrarianOrganisation(data)
+            }
+          ]
+        }
+    }, {
+        matcher: (url) => this.routeMatcher(url, 'acq_invoices'),
+        children: [
+          { path: '', component: RecordSearchComponent },
+          { path: 'detail/:pid', component: DetailComponent },
+          { path: 'edit/:pid', component: EditorComponent },
+          { path: 'new', component: EditorComponent }
+        ],
+        data: {
+          linkPrefix: 'records',
+          types: [
+            {
+              key: _('acq_invoices'),
+              label: _('Invoices'),
+              canAdd: () => this.canAddPatronType(),
+              canUpdate: (record: any) => this.canUpdate(record),
+              canDelete: (record: any) => this.canDelete(record),
+              preprocessRecordEditor: (data: any) => this.preprocessAcqInvoice(data),
+              aggregations: (aggregations: any) => this.filter(aggregations),
+              aggregationsExpand: ['library'],
+              aggregationsOrder: [
+                _('library'),
+                _('status')
+              ],
+              aggregationsBucketSize: 10,
+              listHeaders: {
+                Accept: 'application/rero+json'
+              }
+            }
+          ]
+        }
     }, {
       matcher: (url) => this.routeMatcher(url, 'patrons'),
       children: [
@@ -665,6 +696,19 @@ export class RecordRoutingService {
       orderLineData.acq_order = {$ref: this.apiService.getRefEndpoint('acq_orders', orderPid) };
     }
     return orderLineData;
+  }
+
+  /**
+   * Adds the $ref of the librarian organisation to the data
+   * Adds default invoice date to the data
+   * @param acqInvoicerData - object, record data before edition
+   * @returns object, the modified record data
+   */
+  private preprocessAcqInvoice(acqInvoiceData: any) {
+    if (acqInvoiceData.invoice_date == null) {
+      acqInvoiceData.invoice_date = formatDate(new Date(), 'yyyy-MM-dd', this.translateService.currentLang);
+    }
+    return this.addLibrarianLibraryAndOrganisation(acqInvoiceData);
   }
 
   private matchedUrl(url: UrlSegment[]) {
