@@ -22,8 +22,8 @@
 export const environment = {
   production: false,
   apiBaseUrl: '',
-  $refPrefix: 'https://ils.rero.ch',
-  languages: ['fr', 'de', 'it', 'en'],
+  $refPrefix: 'https://ils.bib.uclouvain.be',
+  languages: ['fr', 'de', 'it', 'en', 'nl', 'es'],
   defaultLanguage: 'en',
   adminRoles: ['system_librarian', 'librarian'],
   sessionExpiredSeconds: 1800, /* Seconds => 1800: 30 minutes */
