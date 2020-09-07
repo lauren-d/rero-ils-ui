@@ -22,8 +22,9 @@
 export const environment = {
   production: false,
   apiBaseUrl: '',
-  $refPrefix: 'https://ils.rero.ch',
-  languages: ['fr', 'de', 'it', 'en'],
+  $refPrefix: 'https://ils.bibtest.uclouvain.be',
+  // $refPrefix: 'https://ils.test.bib.ucl.ac.be',
+  languages: ['fr', 'de', 'it', 'en', 'nl', 'es'],
   globalViewName: 'global',
   translationsURLs: [
     '/assets/rero-ils-ui/public-search/i18n/${lang}.json',
