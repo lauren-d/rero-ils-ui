@@ -48,6 +48,10 @@ export class ItemsRoute extends BaseRoute implements RouteInterface {
         { path: 'new', component: EditorComponent }
       ],
       data: {
+        adminMode: () => of({
+          can: false,
+          message: ''
+        }),
         types: [
           {
             key: this.name,
